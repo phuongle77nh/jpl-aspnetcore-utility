@@ -1,0 +1,7 @@
+{
+  "LoggerSettings": {
+    "AppName": "JPL.NetCoreUtility",
+    "WriteToFile": false,
+    "StructuredConsoleLogging": true
+  }
+}

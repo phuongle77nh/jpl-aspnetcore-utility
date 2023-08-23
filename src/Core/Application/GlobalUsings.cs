@@ -1,0 +1,17 @@
+global using Ardalis.Specification;
+global using FluentValidation;
+global using JPL.NetCoreUtility.Application.Common.Events;
+global using JPL.NetCoreUtility.Application.Common.Exceptions;
+global using JPL.NetCoreUtility.Application.Common.FileStorage;
+global using JPL.NetCoreUtility.Application.Common.Interfaces;
+global using JPL.NetCoreUtility.Application.Common.Models;
+global using JPL.NetCoreUtility.Application.Common.Persistence;
+global using JPL.NetCoreUtility.Application.Common.Specification;
+global using JPL.NetCoreUtility.Application.Common.Validation;
+global using JPL.NetCoreUtility.Domain.Catalog;
+global using JPL.NetCoreUtility.Domain.Common;
+global using JPL.NetCoreUtility.Domain.Common.Contracts;
+global using JPL.NetCoreUtility.Shared.Notifications;
+global using MediatR;
+global using Microsoft.Extensions.Localization;
+global using Microsoft.Extensions.Logging;

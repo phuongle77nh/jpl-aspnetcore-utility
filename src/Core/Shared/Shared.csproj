@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>JPL.NetCoreUtility.Shared</RootNamespace>
+        <AssemblyName>JPL.NetCoreUtility.Shared</AssemblyName>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Update="Roslynator.Analyzers" Version="4.2.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+</Project>

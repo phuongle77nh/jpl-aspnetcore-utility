@@ -1,0 +1,1 @@
+﻿global using JPL.NetCoreUtility.Domain.Common.Contracts;
