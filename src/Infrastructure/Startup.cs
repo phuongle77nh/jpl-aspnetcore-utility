@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using JPL.NetCoreUtility.Infrastructure.ApplicationInsight;
 using JPL.NetCoreUtility.Infrastructure.Auth;
 using JPL.NetCoreUtility.Infrastructure.BackgroundJobs;
 using JPL.NetCoreUtility.Infrastructure.Caching;
@@ -52,6 +53,7 @@ public static class Startup
             .AddPersistence()
             .AddRequestLogging(config)
             .AddRouting(options => options.LowercaseUrls = true)
+            .AddApplicationInsight(config)
             .AddServices();
     }
 
