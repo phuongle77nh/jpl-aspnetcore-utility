@@ -8,5 +8,6 @@ Appsetting volume in docker
 MailClient
 ApiClient
 Nuget package
+IntegrationEvent
 
 Done:
