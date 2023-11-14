@@ -14,3 +14,4 @@ Dynamic convert "json to class"/"class to json"
 
 
 Done:
+Application Insight
