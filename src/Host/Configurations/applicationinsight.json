@@ -1,6 +1,6 @@
 {
   "ApplicationInsights": {
     "ConnectionString": "InstrumentationKey=00000000-0000-0000-0000-000000000000",
-    "CloudRoleName": "rs-api-user-local"
+    "CloudRoleName": "cloud-role-name"
   }
 }
