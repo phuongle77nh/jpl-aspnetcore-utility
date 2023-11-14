@@ -24,4 +24,9 @@ public static class EnumExtensions
         string result = enumValue.GetDescription();
         return result.Split(',').ToList();
     }
+
+    public static IEnumerable<T> GetValues<T>()
+    {
+        return Enum.GetValues(typeof(T)).Cast<T>();
+    }
 }
