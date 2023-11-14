@@ -1,7 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Text.Json;
 
-GenerateHolidayTypes();
+//GenerateHolidayTypes();
+GenerateGroupData();
 
 static void GenerateHolidayTypes()
 {
@@ -21,7 +22,7 @@ static void GenerateHolidayTypes()
     {
         var item = new HolidayType();
         item.Name = type;
-        item.TenantId = "restaff";
+        item.TenantId = "tenant";
         item.IsActive = true;
         items.Add(item);
 
@@ -31,3 +32,24 @@ static void GenerateHolidayTypes()
     Console.WriteLine(json);
 }
 
+static void GenerateGroupData()
+{
+    var items = new List<Group>
+    {
+        new Group
+        {
+            GroupCriterias = new List<GroupCriteria>
+            {
+                new GroupCriteria()
+            },
+            GroupCriteriaType = GroupCriteriaType.MatchAllCriteria,
+            GroupName = "All employees",
+            IsAutoTrigger = true,
+            GroupMembers = new List<GroupMember> { new GroupMember()},
+            ExceptMembers = new List<GroupMember> { new GroupMember() }
+        }
+    };
+    string json = JsonSerializer.Serialize(items, new JsonSerializerOptions { WriteIndented = true });
+    Console.WriteLine(json);
+
+}
