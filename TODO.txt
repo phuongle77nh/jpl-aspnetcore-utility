@@ -1,0 +1,12 @@
+EventBus
+PipelineTemplate
+EmailService
+Extension
+Database
+Host server
+Appsetting volume in docker
+MailClient
+ApiClient
+Nuget package
+
+Done:
