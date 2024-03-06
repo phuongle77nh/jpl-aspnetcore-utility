@@ -1,7 +1,6 @@
-using System.Reflection;
 using Figgle;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -31,7 +30,12 @@ public static class Extensions
             ConfigureElasticSearch(builder, serilogConfig, appName, elasticSearchUrl);
             SetMinimumLogLevel(serilogConfig, minLogLevel);
             OverideMinimumLogLevel(serilogConfig);
-            Console.WriteLine(FiggleFonts.Standard.Render(loggerSettings.AppName));
+            serilogConfig
+                .WriteTo.ApplicationInsights(
+            sp.GetRequiredService<TelemetryConfiguration>(),
+            TelemetryConverter.Traces);
+
+            Console.WriteLine(FiggleFonts.Graffiti.Render(loggerSettings.AppName));
         });
     }
 
