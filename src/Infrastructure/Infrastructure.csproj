@@ -84,5 +84,6 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Common\Test\" />
+      <Folder Include="Security\" />
     </ItemGroup>
 </Project>
