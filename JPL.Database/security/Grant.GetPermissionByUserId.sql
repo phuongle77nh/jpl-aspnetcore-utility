@@ -40,7 +40,7 @@ BEGIN
 		IF (@debug = 1) PRINT(@generatedTableName)
 		
 		DECLARE @sqlFinal NVARCHAR(MAX)= 'INSERT INTO #tempTable202308301415 SELECT ur.UserId, securedRole.EntityId, securedRole.Permission FROM ' + @generatedTableName + ' AS securedRole '
-		+ 'JOIN rs_authentication.[Identity].UserRoles ur ON ur.RoleId = securedRole.SourceId AND securedRole.SourceType = 1 '
+		+ 'JOIN JplAuthentication.[Identity].UserRoles ur ON ur.RoleId = securedRole.SourceId AND securedRole.SourceType = 1 '
 		+ 'WHERE ur.UserId =''' + CONVERT(NVARCHAR(100),@userId) + ''''
 		+ 'UNION SELECT securedUser.SourceId AS UserId, securedUser.EntityId, securedUser.Permission FROM ' + @generatedTableName + ' AS securedUser '
 		+ 'WHERE securedUser.SourceId =''' + CONVERT(NVARCHAR(100),@userId) + ''''
