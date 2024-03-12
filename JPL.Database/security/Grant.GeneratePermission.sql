@@ -56,12 +56,12 @@ BEGIN
 		
 	-- Generate permission for role by scope (ex: HR, CnB,...)
 	DECLARE @sqlGenerateRule NVARCHAR(MAX) = ';WITH targetWithScope AS '
-		+ '(SELECT myself.EntityId, u55.ScopeId FROM rs_user.ConfigTenant.UserScope u55 JOIN (' + @myselfQuery + ') AS myself ON myself.UserId = u55.UserId ) '	
+		+ '(SELECT myself.EntityId, u55.ScopeId FROM JplUser.ConfigTenant.UserScope u55 JOIN (' + @myselfQuery + ') AS myself ON myself.UserId = u55.UserId ) '	
 		+ 'INSERT INTO '+@generatedTableBackupName+' '
 		+ 'SELECT DISTINCT us.RoleId ''SourceId'', targetWithScope.EntityId AS ''EntityId'', 1 AS SourceType, p.Permission ''Permission'' FROM '
 		+ 'JplSecurity.[Grant].PolicyLink pl '
 		+ 'JOIN JplSecurity.[Grant].Policy p ON p.Id = pl.PolicyId AND pl.EntityType = 1 '
-		+ 'JOIN rs_user.ConfigTenant.UserScope us ON us.RoleId = pl.EntityId '
+		+ 'JOIN JplUser.ConfigTenant.UserScope us ON us.RoleId = pl.EntityId '
 		+ 'JOIN targetWithScope ON targetWithScope.ScopeId = us.ScopeId '
 		+ 'WHERE p.ServiceEntityId  = ''' + CONVERT(NVARCHAR(100),@serviceEntityId) + ''''
 	
