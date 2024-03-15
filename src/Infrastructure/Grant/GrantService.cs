@@ -379,7 +379,7 @@ public class GrantService : IGrantService
         return results;
     }
 
-    public async Task<List<string>> GeneratePermissionForEntity(string serviceName, string tableSchema, string tableName, string userEmail = "", string tenantId = "restaff")
+    public async Task<List<string>> GeneratePermissionForEntity(string serviceName, string tableSchema, string tableName, string userEmail = "", string tenantId = "jpl")
     {
         var service = _context.Services.AsNoTracking()
             .Include(x => x.ServiceEntities).ThenInclude(x => x.Policies)

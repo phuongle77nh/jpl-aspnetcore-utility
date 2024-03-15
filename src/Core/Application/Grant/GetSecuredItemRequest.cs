@@ -59,7 +59,7 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
 
     public async Task<SecuredDataDto> Handle(GetSecuredItemRequest request, CancellationToken cancellationToken)
     {
-        var defaultTenant = "restaff";
+        var defaultTenant = "jpl";
         Guid userId = Guid.Empty;
         if (request.UserId.HasValue)
         {

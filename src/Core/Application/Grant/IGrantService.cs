@@ -7,5 +7,5 @@ public interface IGrantService : ITransientService
     Task<string> DeleteService(string serviceName);
     Task<List<string>> GeneratePermission(string serviceName);
     Task<List<PermissionDto>> GetListPermission();
-    Task<List<string>> GeneratePermissionForEntity(string serviceName, string tableSchema, string tableName, string userEmail = "", string tenantId = "restaff");
+    Task<List<string>> GeneratePermissionForEntity(string serviceName, string tableSchema, string tableName, string userEmail = "", string tenantId = "jpl");
 }
