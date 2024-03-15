@@ -372,7 +372,7 @@ public class GrantService : IGrantService
             }
             catch (Exception ex)
             {
-                results.Add($"Failed : {serviceEntity.TableSchema}.{serviceEntity.TableName}");
+                results.Add($"Failed : {serviceEntity.TableSchema}.{serviceEntity.TableName}. {ex.GetAllMessages()}");
             }
         }
 
@@ -415,11 +415,10 @@ public class GrantService : IGrantService
                                 sqlCreateTableSb.ToString(),
                                 commandType: System.Data.CommandType.Text);
                 results.Add($"Success execute sql create table {generatedTableName}");
-
             }
             catch (Exception ex)
             {
-                results.Add($"Fail execute sql create table {generatedTableName}. SqlQuery: {sqlCreateTableSb}");
+                results.Add($"Fail execute sql create table {generatedTableName}. SqlQuery: {sqlCreateTableSb}; {ex.GetAllMessages()}");
             }
             #endregion
 
@@ -473,7 +472,7 @@ public class GrantService : IGrantService
             }
             catch (Exception ex)
             {
-                results.Add($"Fail execute sql generate from attribute. SqlQuery: {sqlTargetFromAttributeSb}");
+                results.Add($"Fail execute sql generate from attribute. SqlQuery: {sqlTargetFromAttributeSb}; {ex.GetAllMessages()}");
             }
             #endregion
 
@@ -606,7 +605,7 @@ public class GrantService : IGrantService
             }
             catch (Exception ex)
             {
-                results.Add($"Fail execute sql merge. SqlQuery: {sqlMergeSecuritySb}");
+                results.Add($"Fail execute sql merge. SqlQuery: {sqlMergeSecuritySb}; {ex.GetAllMessages()}");
             }
 
             #endregion
@@ -622,6 +621,6 @@ public class GrantService : IGrantService
 
     public async Task<List<PermissionDto>> GetListPermission()
     {
-        return _context.Permissions.ProjectToType<PermissionDto>().ToList();
+        return await _context.Permissions.AsNoTracking().ProjectToType<PermissionDto>().ToListAsync();
     }
 }
