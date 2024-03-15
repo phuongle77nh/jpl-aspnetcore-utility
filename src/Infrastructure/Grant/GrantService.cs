@@ -19,14 +19,19 @@ namespace JPL.NetCoreUtility.Infrastructure.Grant;
 #region Models
 public class GetRolesResponse
 {
+    public GetRolesResponse()
+    {
+        Roles = new List<RoleDto>();
+    }
+
     public List<RoleDto> Roles { get; set; }
 }
 
 public class RoleDto
 {
-    public string Id { get; set; }
-    public string TenantId { get; set; }
-    public string RoleName { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public string TenantId { get; set; } = string.Empty;
+    public string RoleName { get; set; } = string.Empty;
 
     public Guid GetId()
     {
@@ -37,13 +42,13 @@ public class RoleDto
 public class SecurityAttributeDto
 {
     public Guid AttributeId { get; set; }
-    public string AttributeQuery { get; set; }
+    public string AttributeQuery { get; set; } = string.Empty;
     public int Permission { get; set; }
 }
 
 public class SecurityRoleDto
 {
-    public string RoleId { get; set; }
+    public string RoleId { get; set; } = string.Empty;
     public int Permission { get; set; }
 }
 
@@ -57,8 +62,8 @@ public class TargetResultDto
 
 public class MyselfQueryResponse
 {
-    public object EntityId { get; set; }
-    public object UserId { get; set; }
+    public string EntityId { get; set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
 }
 
 public class EntityScopeDto
@@ -247,19 +252,22 @@ public class GrantService : IGrantService
                         }
                         else if (policyLinkDto.EntityType == EntityTypeEnum.Attribute)
                         {
-                            var securityAttribute = serviceEntity.SecurityAttributes.FirstOrDefault(x => x.AttributeName == policyLinkDto.AttributeName);
-                            var policyLinkAttribute = policy.PolicyLinks?.FirstOrDefault(x => x.EntityType == EntityTypeEnum.Attribute && x.EntityId == securityAttribute.Id);
-                            if (policyLinkAttribute == null)
+                            if (serviceEntity.SecurityAttributes != null)
                             {
-                                policyLinkAttribute = new PolicyLink
+                                var securityAttribute = serviceEntity.SecurityAttributes.FirstOrDefault(x => x.AttributeName == policyLinkDto.AttributeName);
+                                var policyLinkAttribute = policy.PolicyLinks?.FirstOrDefault(x => x.EntityType == EntityTypeEnum.Attribute && x.EntityId == securityAttribute.Id);
+                                if (policyLinkAttribute == null)
                                 {
-                                    PolicyId = policy.Id,
-                                    EntityId = securityAttribute.Id,
-                                    EntityType = EntityTypeEnum.Attribute,
-                                    EntityFormat = policyLinkDto.EntityFormat
-                                };
+                                    policyLinkAttribute = new PolicyLink
+                                    {
+                                        PolicyId = policy.Id,
+                                        EntityId = securityAttribute.Id,
+                                        EntityType = EntityTypeEnum.Attribute,
+                                        EntityFormat = policyLinkDto.EntityFormat
+                                    };
 
-                                _context.Add(policyLinkAttribute);
+                                    _context.Add(policyLinkAttribute);
+                                }
                             }
                         }
                     }
@@ -343,7 +351,6 @@ public class GrantService : IGrantService
     {
         var service = await _context.Services.FirstOrDefaultAsync(x => x.ServiceName == serviceName);
         if (service == null) return "Not found.";
-
 
         _context.Services.Remove(service);
         await _context.SaveChangesAsync();
@@ -500,14 +507,18 @@ public class GrantService : IGrantService
                 var entityScopes = new List<EntityScopeDto>();
                 foreach (var myself in myselfData)
                 {
-                    var myselfScopes = userScopes.Where(x => x.UserId == myself.UserId);
-                    foreach (var item in myselfScopes)
+                    if (myself != null && myself.EntityId != null && myself.UserId != null)
                     {
-                        entityScopes.Add(new EntityScopeDto
+                        string myselfUserId = myself.UserId;
+                        var myselfScopes = userScopes.Where(x => x.UserId == myselfUserId);
+                        foreach (var item in myselfScopes)
                         {
-                            EntityId = new Guid(myself.EntityId.ToString()),
-                            ScopeId = item.ScopeId
-                        });
+                            entityScopes.Add(new EntityScopeDto
+                            {
+                                EntityId = new Guid(myself.EntityId),
+                                ScopeId = item.ScopeId
+                            });
+                        }
                     }
                 }
 
@@ -582,7 +593,7 @@ public class GrantService : IGrantService
 
             sqlMergeSecuritySb.AppendLine($"IF OBJECT_ID('tempdb..#tempTableGeneratedPermSecured') IS NOT NULL DROP TABLE #tempTableGeneratedPermSecured");
             sqlMergeSecuritySb.AppendLine($"CREATE TABLE #tempTableGeneratedPermSecured( SourceId UNIQUEIDENTIFIER, EntityId UNIQUEIDENTIFIER, SourceType INT ,Permission INT)");
-            foreach ( var item in finalTargetData)
+            foreach (var item in finalTargetData)
             {
                 sqlMergeSecuritySb.AppendLine($"INSERT INTO #tempTableGeneratedPermSecured( SourceId, EntityId, SourceType , Permission) VALUES('{item.SourceId}','{item.EntityId}',{item.SourceType},{item.Permission})");
             }
@@ -598,9 +609,9 @@ public class GrantService : IGrantService
 
             try
             {
-                //await _context.Connection.ExecuteAsync(
+                // await _context.Connection.ExecuteAsync(
                 //                sqlMergeSecuritySb.ToString());
-                //results.Add($"Success execute sql merge");
+                // results.Add($"Success execute sql merge");
 
             }
             catch (Exception ex)

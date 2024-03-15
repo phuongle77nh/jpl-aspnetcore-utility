@@ -7,10 +7,10 @@ namespace JPL.NetCoreUtility.Application.Grant;
 public class SecuredItem
 {
     public Guid EntityId { get; set; }
-    public string EntityName { get; set; }
+    public string EntityName { get; set; } = string.Empty;
 
     public int Permission { get; set; }
-    public string PermissionName { get; set; }
+    public string PermissionName { get; set; } = string.Empty;
 }
 
 public class SecuredDataDto
@@ -21,11 +21,13 @@ public class SecuredDataDto
     public SecuredDataDto(List<SecuredItem> securedItems)
     {
         SecuredItems = securedItems;
+        NoPermissionItems = new List<SecuredItem>();
     }
 
     public SecuredDataDto()
     {
         SecuredItems = new List<SecuredItem>();
+        NoPermissionItems = new List<SecuredItem>();
     }
 }
 
@@ -33,9 +35,9 @@ public class GetSecuredItemRequest : IRequest<SecuredDataDto>
 {
     public Guid? UserId { get; set; }
     public string? UserEmail { get; set; }
-    public string ServiceName { get; set; }
-    public string ServiceEntityName { get; set; }
-    public string ServiceEntitySchema { get; set; }
+    public string ServiceName { get; set; } = string.Empty;
+    public string ServiceEntityName { get; set; } = string.Empty;
+    public string ServiceEntitySchema { get; set; } = string.Empty;
     public GetSecuredItemRequest(DefaultIdType? userId, string? userEmail, string serviceName, string serviceEntityName, string serviceEntitySchema)
     {
         UserId = userId;

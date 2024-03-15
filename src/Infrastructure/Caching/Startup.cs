@@ -20,7 +20,7 @@ internal static class Startup
                     options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions()
                     {
                         AbortOnConnectFail = true,
-                        EndPoints = { settings.RedisURL }
+                        EndPoints = { settings.RedisURL ?? string.Empty }
                     };
                 });
             }

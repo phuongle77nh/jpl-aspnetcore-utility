@@ -14,11 +14,11 @@ public class JupEmployeeItem
 {
     public Guid UserId { get; set; }
     public Guid DepartmentId { get; set; }
-    public string Department { get; set; }
-    public string JobTitle { get; set; }
-    public string BusinessEmail { get; set; }
+    public string Department { get; set; } = string.Empty;
+    public string JobTitle { get; set; } = string.Empty;
+    public string BusinessEmail { get; set; } = string.Empty;
     public double EmployeeStatus { get; set; }
-    public string TenantId { get; set; }
+    public string TenantId { get; set; } = string.Empty;
 
     public EmployeeStatus GetEmployeeStatus()
     {
@@ -29,8 +29,8 @@ public class JupEmployeeItem
 
 public class SetUserScopeInput
 {
-    public string TenantId { get; set; }
-    public string Role { get; set; }
-    public string Scope { get; set; }
-    public string Username { get; set; }
+    public string TenantId { get; set; } = string.Empty;
+    public string Role { get; set; } = string.Empty;
+    public string Scope { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
 }

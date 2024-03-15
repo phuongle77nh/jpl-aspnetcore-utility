@@ -26,7 +26,7 @@ public static class ExceptionExtensions
 
     public static string GetAllMessages(this Exception exception)
     {
-        var messages = exception.FromHierarchy(ex => ex.InnerException)
+        var messages = exception.FromHierarchy(ex => ex.InnerException!)
             .Select(ex => ex.Message);
         return string.Join(Environment.NewLine, messages);
     }
