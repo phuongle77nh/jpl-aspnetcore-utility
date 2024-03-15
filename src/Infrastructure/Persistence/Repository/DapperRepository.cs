@@ -39,4 +39,11 @@ public class DapperRepository : IDapperRepository
 
         return _dbContext.Connection.QuerySingleAsync<T>(sql, param, transaction);
     }
+
+    public async Task<List<T>> ExecStoredProcAsync<T>(string sql, object? param = null, IDbTransaction? transaction = null, CancellationToken cancellationToken = default)
+    where T : class
+    {
+        var result = await _dbContext.Connection.QueryAsync<T>(sql, param, transaction, commandType: CommandType.StoredProcedure);
+        return result == null ? new List<T>() : result.ToList();
+    }
 }

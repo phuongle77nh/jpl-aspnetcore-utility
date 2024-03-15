@@ -1,0 +1,10 @@
+[
+  {
+    "PermissionName": "Read",
+    "Value": 1
+  },
+  {
+    "PermissionName": "Write",
+    "Value": 2
+  }
+]

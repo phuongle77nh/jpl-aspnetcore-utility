@@ -1,0 +1,59 @@
+[
+  {
+    "ServiceName": "jpl-api-user",
+    "Database": "jpl_user",
+    "ServiceEntities": [
+      //User_User
+      {
+        "TableName": "User",
+        "TableSchema": "User",
+        "PrimaryColumnName": "Id",
+        "MyselfQuery": "SELECT u.Id as UserId , u.Id as EntityId  FROM jpl_authentication.[Identity].Users u",
+        "Policies": [
+          {
+            "PolicyName": "HR_Read",
+            "Permission": 1
+          },
+          {
+            "PolicyName": "HR_CRUD",
+            "Permission": 2
+          },
+          {
+            "PolicyName": "Manager",
+            "Permission": 1,
+            "PolicyLinks": [
+              {
+                "EntityType": 2,
+                "EntityFormat": "",
+                "EntityId": "6B9E6635-3FF7-4FB6-9FA1-98F85FB5266D"
+              }
+            ]
+          },
+          {
+            "PolicyName": "Myself",
+            "Permission": 1,
+            "PolicyLinks": [
+              {
+                "EntityType": 2,
+                "EntityFormat": "",
+                "EntityId": "86ABB368-FC18-4DAE-B815-861437BBB6A5"
+              }
+            ]
+          }
+        ],
+        "SecurityAttributes": [
+          {
+            "Id": "6B9E6635-3FF7-4FB6-9FA1-98F85FB5266D",
+            "AttributeName": "Manager",
+            "AttributeQuery": "SELECT us.UserId as UserId, us2.UserId as EntityId from jpl_user.ConfigTenant.UserScope us join jpl_user.ConfigTenant.[Scope] s on s.Id = us.ScopeId JOIN jpl_user.ConfigTenant.UserScope us2 on us2.ScopeId = us.ScopeId JOIN jpl_authentication.[Identity].Roles r ON r.Id = us.RoleId WHERE s.ScopeType  = 1 AND r.Name ='MS001'"
+          },
+          {
+            "Id": "86ABB368-FC18-4DAE-B815-861437BBB6A5",
+            "AttributeName": "Myself",
+            "AttributeQuery": "SELECT u.Id as UserId , u.Id as EntityId  FROM jpl_authentication.[Identity].Users u"
+          }
+        ]
+      }
+    ]
+  }
+]
