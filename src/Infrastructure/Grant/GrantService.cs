@@ -131,7 +131,7 @@ public class GrantService : IGrantService
                 .Include(x => x.ServiceEntities).ThenInclude(x => x.SecurityAttributes)
                 .Include(x => x.ServiceEntities).ThenInclude(x => x.Policies).ThenInclude(x => x.PolicyLinks)
                 .FirstOrDefault(x => x.ServiceName == serviceDto.ServiceName);
-            var isNew = false;
+            bool isNew = false;
             if (service != null)
             {
                 service.Database = serviceDto.Database;
@@ -399,10 +399,10 @@ public class GrantService : IGrantService
         try
         {
             #region Generate Table store permission
-            var targetTableName = $"{service.Database}.[{serviceEntity.TableSchema}].[{serviceEntity.TableName}]";
+            string targetTableName = $"{service.Database}.[{serviceEntity.TableSchema}].[{serviceEntity.TableName}]";
             results.Add($"targetTableName: {targetTableName}");
 
-            var generatedTableName = $"{RsSecurityDb}.[Generated].{service.Database}_{serviceEntity.TableSchema.ToLower()}_{serviceEntity.TableName.ToLower()}";
+            string generatedTableName = $"{RsSecurityDb}.[Generated].{service.Database}_{serviceEntity.TableSchema.ToLower()}_{serviceEntity.TableName.ToLower()}";
             var sqlCreateTableSb = new StringBuilder();
             sqlCreateTableSb.Append($"IF NOT EXISTS (SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'{generatedTableName}') AND type in (N'U'))");
             sqlCreateTableSb.AppendLine("BEGIN");
