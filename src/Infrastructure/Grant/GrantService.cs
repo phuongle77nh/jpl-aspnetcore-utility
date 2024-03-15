@@ -613,7 +613,7 @@ public class GrantService : IGrantService
         }
         catch (Exception ex)
         {
-            results.Add($"Failed any: {ex}");
+            results.Add($"Failed any: {ex}; {ex.GetAllMessages()}");
         }
 
         return results;
