@@ -74,7 +74,6 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
             {
                 userId = userInfos.First().UserId;
             }
-
         }
 
         if (userId == Guid.Empty) { return new SecuredDataDto(); }

@@ -17,5 +17,4 @@ public class SprocConstants
     public const string GetUserRoles = $"{DatabaseName.JplAuth}.[Identity].[GetUserRoles]";
     public const string DeleteUserScopes = $"{DatabaseName.JplAuth}.[Identity].[DeleteUserScopes]";
     public const string GeneratePermission = $"{DatabaseName.JplSecurity}.[Grant].[GeneratePermission]";
-
 }

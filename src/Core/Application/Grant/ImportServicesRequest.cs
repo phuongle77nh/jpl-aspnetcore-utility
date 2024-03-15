@@ -66,7 +66,6 @@ public class PolicyLinkDto : BaseDto
     public string EntityValue { get; set; } = string.Empty;
     public string TenantId { get; set; } = string.Empty;
     public string AttributeName { get; set; } = string.Empty;
-
 }
 
 public class PolicyDto : BaseDto
