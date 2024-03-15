@@ -61,7 +61,7 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
 
     public async Task<SecuredDataDto> Handle(GetSecuredItemRequest request, CancellationToken cancellationToken)
     {
-        string defaultTenant = "jpl";
+        const string defaultTenant = "jpl";
         Guid userId = Guid.Empty;
         if (request.UserId.HasValue)
         {
@@ -69,8 +69,11 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
         }
         else if (request.UserEmail != null)
         {
-            var userInfos = await _repository.ExecStoredProcAsync<UserInfoDto>(SprocConstants.GetUsers, new { request.UserEmail, TenantId = defaultTenant });
-            if (userInfos != null && userInfos.Any())
+            var userInfos = await _repository.ExecStoredProcAsync<UserInfoDto>(
+                sql: SprocConstants.GetUsers,
+                param: new { request.UserEmail, TenantId = defaultTenant },
+                cancellationToken: cancellationToken);
+            if (userInfos?.Any() == true)
             {
                 userId = userInfos.First().UserId;
             }
@@ -78,13 +81,16 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
 
         if (userId == Guid.Empty) { return new SecuredDataDto(); }
 
-        var securedItems = await _repository.ExecStoredProcAsync<SecuredItem>("[Grant].[GetPermissionByUserId]", new
-        {
-            ServiceName = request.ServiceName,
-            InputTableName = request.ServiceEntityName,
-            InputTableSchema = request.ServiceEntitySchema,
-            InputUserId = userId
-        });
+        var securedItems = await _repository.ExecStoredProcAsync<SecuredItem>(
+            sql: "[Grant].[GetPermissionByUserId]",
+            param: new
+                {
+                    request.ServiceName,
+                    InputTableName = request.ServiceEntityName,
+                    InputTableSchema = request.ServiceEntitySchema,
+                    InputUserId = userId
+                },
+            cancellationToken: cancellationToken);
 
         if (securedItems != null)
         {
@@ -97,7 +103,10 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
             var noPermissionList = new List<SecuredItem>();
             if (request.ServiceEntityName == "User" && request.ServiceEntitySchema == "User")
             {
-                var users = await _repository.ExecStoredProcAsync<UserInfoDto>(SprocConstants.GetUsers, new { TenantId = defaultTenant });
+                var users = await _repository.ExecStoredProcAsync<UserInfoDto>(
+                    sql: SprocConstants.GetUsers,
+                    param: new { TenantId = defaultTenant },
+                    cancellationToken: cancellationToken);
                 foreach (var user in users)
                 {
                     var item = securedItems.FirstOrDefault(x => x.EntityId == user.UserId);
@@ -114,9 +123,10 @@ public class GetSecuredItemRequestHandler : IRequestHandler<GetSecuredItemReques
                 }
             }
 
-            var result = new SecuredDataDto(securedItems);
-            result.NoPermissionItems = noPermissionList;
-            return result;
+            return new SecuredDataDto(securedItems)
+            {
+                NoPermissionItems = noPermissionList
+            };
         }
 
         return new SecuredDataDto(new List<SecuredItem>());
