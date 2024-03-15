@@ -43,29 +43,5 @@ public class ServiceSeeder : ICustomSeeder
             await _db.SaveChangesAsync(cancellationToken);
             _logger.LogInformation($"Seeded {entityName}.");
         }
-        else if (false)
-        {
-            string data = await File.ReadAllTextAsync(path + $"/Grant/{entityName}.json", cancellationToken);
-            var items = _serializerService.Deserialize<List<Service>>(data);
-
-            if (items != null)
-            {
-                foreach (var item in items)
-                {
-                    foreach (var seItem in item.ServiceEntities)
-                    {
-                        var se = _db.ServiceEntities.Include(x => x.Policies).FirstOrDefault(x => x.TableName == seItem.TableName && x.TableSchema == seItem.TableSchema);
-                        var policies = se.Policies.Select(x => x.PolicyName).ToList();
-                        var missingPolicies = seItem.Policies.Where(x => !policies.Contains(x.PolicyName));
-                        foreach (var policy in missingPolicies)
-                        {
-                            se.Policies.Add(policy);
-                        }
-                    }
-                }
-            }
-
-            await _db.SaveChangesAsync(cancellationToken);
-        }
     }
 }
