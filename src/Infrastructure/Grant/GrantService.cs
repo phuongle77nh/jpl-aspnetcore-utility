@@ -75,7 +75,7 @@ public class EntityScopeDto
 
 public class GrantService : IGrantService
 {
-    private const string RsSecurityDb = "jpl_security";
+    private const string JplSecurityDb = "jpl_security";
     private readonly ApplicationDbContext _context;
     private readonly IDapperRepository _repository;
 
@@ -409,7 +409,7 @@ public class GrantService : IGrantService
             string targetTableName = $"{service.Database}.[{serviceEntity.TableSchema}].[{serviceEntity.TableName}]";
             results.Add($"targetTableName: {targetTableName}");
 
-            string generatedTableName = $"{RsSecurityDb}.[Generated].{service.Database}_{serviceEntity.TableSchema.ToLower()}_{serviceEntity.TableName.ToLower()}";
+            string generatedTableName = $"{JplSecurityDb}.[Generated].{service.Database}_{serviceEntity.TableSchema.ToLower()}_{serviceEntity.TableName.ToLower()}";
             var sqlCreateTableSb = new StringBuilder();
             sqlCreateTableSb.Append($"IF NOT EXISTS (SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'{generatedTableName}') AND type in (N'U'))");
             sqlCreateTableSb.AppendLine("BEGIN");
